@@ -31,16 +31,17 @@ export async function POST(req: Request) {
       "yyyy-MM-dd HH:mm:ss"
     );
 
-    await db
+    const link = await db
       .insert(links)
       .values({
         id: createId(),
         url: validatedLink.data.url,
         susLink: susy,
         expiresAt
-      });
+      })
+      .returning();
 
-    return NextResponse.json({ success: true, susy }, { status: 201 });
+    return NextResponse.json({ success: true, link: link[0] }, { status: 201 });
   } catch (err) {
     return NextResponse.json(
       { success: false, error: "Unexpected error occour" },
