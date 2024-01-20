@@ -5,7 +5,7 @@ import { links } from ".";
 export const users = sqliteTable("users", {
   id: text("id", { length: 15 }).notNull().primaryKey(),
   username: text("username", { length: 64 }).notNull(),
-  email: text("email", { length: 255 }).notNull(),
+  email: text("email", { length: 255 }).notNull().unique(),
   createdAt: text("created_at").notNull().default("CURRENT_TIMESTAMP")
 });
 
