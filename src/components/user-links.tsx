@@ -12,7 +12,7 @@ export function UserLinks() {
   const [links] = useLocalStorage<Link[]>("@susy.links", []);
 
   if (!isClient || !links || links.length === 0) return (
-    <div className="flex flex-col items-center mx-auto max-w-sm font-mono text-center">
+    <div className="flex flex-col items-center mx-auto max-w-sm text-center">
       <div className="w-fit p-4 mb-2 rounded-md bg-fuchsia-50 text-fuchsia-600">
         <LinkIcon className="w-5 h-5" />
       </div>
@@ -27,7 +27,7 @@ export function UserLinks() {
       {links.length > 0 && links.map(link => (
         <li
           key={link.id}
-          className="flex items-center justify-between p-4 border border-border rounded-md font-mono"
+          className="flex items-center justify-between p-4 border border-border rounded-md"
         >
           <div className="flex flex-col">
             <span>{link.susLink}</span>
