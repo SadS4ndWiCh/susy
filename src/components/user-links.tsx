@@ -23,7 +23,7 @@ export function UserLinks() {
   );
 
   return (
-    <ul className="mt-2">
+    <ul className="mt-2 space-y-2">
       {links.length > 0 && links.map(link => (
         <li
           key={link.id}
