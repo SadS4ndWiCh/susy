@@ -1,12 +1,10 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { GeistMono } from "geist/font/mono"
 
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
 
 import "./globals.css";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://susy.vercel.app"),
@@ -24,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn("text-foreground bg-background antialiased", inter.className)}>
+      <body className={cn("text-foreground bg-background antialiased font-mono", GeistMono.variable)}>
         {children}
         <Toaster />
       </body>
