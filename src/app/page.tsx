@@ -1,4 +1,5 @@
 import { CreateLinkForm } from "@/components/create-link-form";
+import { LogoutButton } from "@/components/logout-button";
 import { UserLinks } from "@/components/user-links";
 
 export default function Home() {
@@ -10,6 +11,8 @@ export default function Home() {
           Already have many URL shortener boring solutions, so aiming for a more 
           funny one, now you can create a suspicious link to share.
         </p>
+
+        <LogoutButton />
       </header>
 
       <main className="max-w-xl mx-auto my-4">
