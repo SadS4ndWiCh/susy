@@ -1,22 +1,19 @@
 import { NextResponse } from "next/server";
-import { parseCookies } from "oslo/cookie";
 
+import { validateRequest } from "@/lib/auth/request";
 import { createSessionCookie, invalidateSession } from "@/lib/auth/session";
-import { validateJWT } from "@/lib/auth/jwt";
 
 export async function POST(req: Request) {
-  const cookies = parseCookies(req.headers.get("cookie") ?? "");
-  const jwt = await validateJWT(cookies.get("susysession") ?? "");
+  const session = await validateRequest(req);
 
-  if (!jwt) {
+  if (!session) {
     return NextResponse.json(
       { success: false, error: "Unauthorized" },
       { status: 401 }
     );
   }
 
-  // @ts-ignore
-  await invalidateSession(jwt.payload.sessionId);
+  await invalidateSession(session.sessionId);
 
   const cookie = await createSessionCookie(null);
 
