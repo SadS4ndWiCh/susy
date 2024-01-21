@@ -64,12 +64,15 @@ export async function createSessionCookie(session: Session | null) {
 
   if (session) {
     const createJWT = await createJWTBuilder();
-    payload = await createJWT({ sessionId: session.sessionId }, {
-      issuer: "susy",
-      subject: session.userId,
-      audiences: ["Susy's user"],
-      expiresIn: new TimeSpan(1, "d"),
-    });
+    payload = await createJWT(
+      { sessionId: session.sessionId, userId: session.userId },
+      {
+        issuer: "susy",
+        subject: session.userId,
+        audiences: ["Susy's user"],
+        expiresIn: new TimeSpan(1, "d"),
+      }
+    );
   }
 
   return serializeCookie("susysession", payload, {
