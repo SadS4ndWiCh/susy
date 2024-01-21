@@ -4,6 +4,7 @@ import { GeistMono } from "geist/font/mono"
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
 
+import { Providers } from "./providers";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -23,7 +24,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={cn("text-foreground bg-background antialiased font-mono", GeistMono.variable)}>
-        {children}
+        <Providers>
+          {children}
+        </Providers>
         <Toaster />
       </body>
     </html>
