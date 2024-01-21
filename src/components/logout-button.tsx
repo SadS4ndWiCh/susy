@@ -23,7 +23,7 @@ export function LogoutButton() {
   }
 
   return (
-    <Button variant="outline" size="icon" onClick={onClick}>
+    <Button variant="outline" size="icon" onClick={onClick} className="flex-shrink-0">
       <LogOut className="w-4 h-4" />
     </Button>
   )
