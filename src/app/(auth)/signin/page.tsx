@@ -1,52 +1,29 @@
-"use client"
+import type { Metadata } from "next"
+import Link from "next/link"
 
-import { useRouter, useSearchParams } from "next/navigation"
+import { SigninForm } from "@/components/forms/signin-form"
 
-import { z } from "zod"
-import { toast } from "sonner"
-import { SubmitHandler, useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-
-import { signIn } from "@/lib/api/auth"
-import { signinSchema } from "@/lib/validations/auth"
-
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+export const metadata: Metadata = {
+  title: "Sign in"
+}
 
 export default function Signin() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-
-  const { register, handleSubmit } = useForm<z.infer<typeof signinSchema>>({
-    resolver: zodResolver(signinSchema),
-  });
-
-  const onSubmit: SubmitHandler<z.infer<typeof signinSchema>> = async (data) => {
-    const res = await signIn(data);
-
-    if (res.ok) {
-      return router.replace(searchParams.get("from") ?? "/");
-    }
-
-    toast.error("Failed to login");
-  }
-
   return (
     <>
-      <h1>Signin</h1>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
-          <Label htmlFor="email">Email</Label>
-          <Input id="email" placeholder="e.g. johndoe@email.com" {...register("email")} />
-        </div>
-        <div>
-          <Label htmlFor="password">Password</Label>
-          <Input id="password" placeholder="*********" {...register("password")} />
-        </div>
+      <header>
+        <h1 className="text-xl font-bold">Welcome back!</h1>
+        <p className="text-balance text-muted-foreground">
+          Hurry up and enter your email and password to continue sharing suspicous things
+        </p>
+      </header>
 
-        <Button>Signin</Button>
-      </form>
+      <SigninForm />
+
+      <footer>
+        <Link href="/signup" className="underline underline-offset-4">
+          Don&apos;t have an account? Sign up
+        </Link>
+      </footer>
     </>
   )
 }
