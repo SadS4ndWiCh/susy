@@ -1,14 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { parseCookies } from "oslo/cookie";
 
-import { validateJWT } from "./lib/auth/jwt";
+import { validateRequest } from "./lib/auth/request";
 
 export async function middleware(req: NextRequest) {
-  const cookies = parseCookies(req.headers.get("cookie") ?? "");
-  const session = cookies.get("susysession");
-  const jwt = await validateJWT(session ?? "");
+  const session = await validateRequest(req);
 
-  const isAuth = !!jwt;
+  const isAuth = !!session;
   const isAuthPage = req.nextUrl.pathname.startsWith("/signup") ||
                      req.nextUrl.pathname.startsWith("/signin");
 
