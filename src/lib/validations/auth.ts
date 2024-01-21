@@ -5,5 +5,7 @@ export const signupSchema = z.object({
   email: z.string().email().max(255),
   password: z.string().min(6).max(255)
 });
+export type SignUp = z.infer<typeof signupSchema>;
 
 export const signinSchema = signupSchema.omit({ username: true });
+export type SignIn = z.infer<typeof signinSchema>;
