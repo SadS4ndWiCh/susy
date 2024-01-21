@@ -1,17 +1,23 @@
 "use client"
 
 import { Link as LinkIcon } from "lucide-react";
-import { useIsClient, useLocalStorage } from "usehooks-ts";
+import { useQuery } from "@tanstack/react-query";
 
-import { Link } from "@/lib/validations/links";
-import { CopyButton } from "./copy-button";
 import { env } from "@/lib/env/client";
+import { getUserLinks } from "@/lib/api/links";
+
+import { CopyButton } from "./copy-button";
+import { Skeleton } from "./ui/skeleton";
 
 export function UserLinks() {
-  const isClient = useIsClient();
-  const [links] = useLocalStorage<Link[]>("@susy.links", []);
+  const { isPending: loading, data: links } = useQuery({
+    queryKey: ["links"],
+    queryFn: getUserLinks
+  });
 
-  if (!isClient || !links || links.length === 0) return (
+  if (loading) return <UserLinksSkeleton />
+
+  if (!links || links.length === 0) return (
     <div className="flex flex-col items-center mx-auto max-w-sm text-center">
       <div className="w-fit p-4 mb-2 rounded-md bg-fuchsia-50 text-fuchsia-600">
         <LinkIcon className="w-5 h-5" />
@@ -47,6 +53,19 @@ export function UserLinks() {
             <CopyButton content={`${env.NEXT_PUBLIC_API_BASE_URL}/${link.susLink}`} />
           </div>
         </li>
+      ))}
+    </ul>
+  )
+}
+
+export function UserLinksSkeleton() {
+  return (
+    <ul className="mt-2 space-y-2">
+      {Array.from({ length: 4 }).map((_, idx) => (
+        <Skeleton
+          key={`uls-${idx}`}
+          className="px-4 py-8"
+        />
       ))}
     </ul>
   )

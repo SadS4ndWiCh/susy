@@ -1,42 +1,37 @@
 "use client"
 
-import { SubmitHandler, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useLocalStorage } from "usehooks-ts";
 import { toast } from "sonner";
+import { Loader } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 
-import { api } from "@/lib/api";
-import { newLinkSchema, type Link, type NewLink } from "@/lib/validations/links";
+import { newLinkSchema, type NewLink } from "@/lib/validations/links";
+import { createLink } from "@/lib/api/links";
 
 export function CreateLinkForm() {
-  const [links, setLinks] = useLocalStorage<Link[]>("@susy.links", []);
-  const { handleSubmit, register } = useForm<NewLink>({
+  const { handleSubmit, register, reset } = useForm<NewLink>({
     resolver: zodResolver(newLinkSchema),
   });
 
-  const onSubmit: SubmitHandler<NewLink> = async (data) => {
-    const res = await api("/links", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ url: data.url })
-    });
+  const queryClient = useQueryClient();
+  const { isPending: loading, mutate: onSubmit } = useMutation({
+    mutationFn: createLink,
+    onSettled: (res) => {
+      if (!res || !res.ok) return toast.error("Failed to create link.");
 
-    if (!res.ok) return toast.error("Failed to create link.");
-
-    const { link } = await res.json() as { success: boolean, link: Link };
-    setLinks([...links, link]);
-
-    toast.success("Link successfuly created.");
-  }
+      toast.success("Link successfuly created.");
+      queryClient.invalidateQueries({ queryKey: ["links"] });
+      reset();
+    }
+  });
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit((data) => onSubmit(data))}>
       <Label htmlFor="url">URL</Label>
       <div className="flex gap-2">
         <Input
@@ -45,7 +40,10 @@ export function CreateLinkForm() {
           placeholder="e.g. https://google.com"
           {...register("url")}
         />
-        <Button>Create</Button>
+        <Button className="flex items-center gap-2">
+          {loading && <Loader className="w-4 h-4 animate-spin" />}
+          {"Create"}
+        </Button>
       </div>
     </form>
   )
