@@ -6,7 +6,7 @@ import {
   type JWTAlgorithm,
 } from "oslo/jwt";
 
-import { env } from "../env/server";
+import { env } from "@/lib/server/env";
 
 export async function createJWTBuilder() {
   const secret = new TextEncoder().encode(env.JWT_SECRET);

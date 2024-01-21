@@ -1,3 +1,5 @@
+import "server-only";
+
 import { init } from "@paralleldrive/cuid2";
 
 const createId = init({ length: 10 });

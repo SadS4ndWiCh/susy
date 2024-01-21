@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { LogOut } from "lucide-react";
 
-import { signOut } from "@/lib/api/auth";
+import { signOut } from "@/lib/client/api/auth";
 
 import { Button } from "./ui/button";
 

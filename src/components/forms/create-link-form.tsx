@@ -10,8 +10,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 
-import { newLinkSchema, type NewLink } from "@/lib/validations/links";
-import { createLink } from "@/lib/api/links";
+import { newLinkSchema, type NewLink } from "@/lib/shared/validations/links";
+import { createLink } from "@/lib/client/api/links";
 
 export function CreateLinkForm() {
   const { handleSubmit, register, reset } = useForm<NewLink>({

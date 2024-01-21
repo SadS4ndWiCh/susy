@@ -3,9 +3,9 @@ import { init } from "@paralleldrive/cuid2";
 
 import { db } from "@/db/connection";
 import { userKeys, users } from "@/db/schemas";
-import { hashPassword } from "@/lib/auth/password";
-import { signupSchema } from "@/lib/validations/auth";
-import { createSession, createSessionCookie } from "@/lib/auth/session";
+import { hashPassword } from "@/lib/server/auth/password";
+import { signupSchema } from "@/lib/shared/validations/auth";
+import { createSession, createSessionCookie } from "@/lib/server/auth/session";
 
 const createId = init({ length: 15 });
 

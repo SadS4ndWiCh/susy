@@ -3,11 +3,11 @@ import { NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
 
 import { db } from "@/db/connection";
-import { signinSchema } from "@/lib/validations/auth";
+import { signinSchema } from "@/lib/shared/validations/auth";
 
 import { userKeys } from "@/db/schemas";
-import { validatePassword } from "@/lib/auth/password";
-import { createSession, createSessionCookie } from "@/lib/auth/session";
+import { validatePassword } from "@/lib/server/auth/password";
+import { createSession, createSessionCookie } from "@/lib/server/auth/session";
 
 export async function POST(req: Request) {
   const body = await req.json();

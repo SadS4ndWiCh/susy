@@ -9,8 +9,8 @@ import { init } from "@paralleldrive/cuid2";
 import { db } from "@/db/connection";
 import { userSessions } from "@/db/schemas";
 
-import { env } from "@/lib/env/server";
-import { createJWTBuilder } from "@/lib/auth/jwt";
+import { env } from "@/lib/server/env";
+import { createJWTBuilder } from "@/lib/server/auth/jwt";
 
 export type Session = {
   userId: string;

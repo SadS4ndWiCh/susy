@@ -7,9 +7,9 @@ import { format } from "date-fns";
 import { db } from "@/db/connection";
 import { links } from "@/db/schemas";
 
-import { createSusy } from "@/lib/susy";
-import { newLinkSchema } from "@/lib/validations/links";
-import { validateRequest } from "@/lib/auth/request";
+import { createSusy } from "@/lib/server/susy";
+import { newLinkSchema } from "@/lib/shared/validations/links";
+import { validateRequest } from "@/lib/server/auth/request";
 
 const createId = init({ length: 15 });
 const DAYS_IN_SECONDS = 1000 * 60 * 60 * 24;

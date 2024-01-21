@@ -1,9 +1,12 @@
+import "server-only";
+
 import { parseCookies } from "oslo/cookie";
 import { verifyRequestOrigin } from "oslo/request";
 
+import { env } from "@/lib/server/env";
+
 import { validateJWT } from "./jwt";
 import { validateSession } from "./session";
-import { env } from "../env/server";
 
 const SAFE_METHODS = ["GET", "OPTIONS", "HEAD", "TRACE"];
 

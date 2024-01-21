@@ -3,8 +3,8 @@
 import { Link as LinkIcon } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 
-import { env } from "@/lib/env/client";
-import { getUserLinks } from "@/lib/api/links";
+import { env } from "@/lib/client/env";
+import { getUserLinks } from "@/lib/client/api/links";
 
 import { CopyButton } from "./copy-button";
 import { Skeleton } from "./ui/skeleton";

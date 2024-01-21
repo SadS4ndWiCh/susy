@@ -1,4 +1,4 @@
-import { allLinksSchema, type NewLink } from "../validations/links";
+import { allLinksSchema, type NewLink } from "@/lib/shared/validations/links";
 import { api } from ".";
 
 export const getUserLinks = async () => {

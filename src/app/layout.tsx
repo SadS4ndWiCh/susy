@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { GeistMono } from "geist/font/mono"
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/client/utils";
 import { Toaster } from "@/components/ui/sonner";
 
 import { Providers } from "./providers";

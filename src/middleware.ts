@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { validateRequest } from "./lib/auth/request";
+import { validateRequest } from "@/lib/server/auth/request";
 
 export async function middleware(req: NextRequest) {
   const session = await validateRequest(req);

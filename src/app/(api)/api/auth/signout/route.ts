@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
-import { validateRequest } from "@/lib/auth/request";
-import { createSessionCookie, invalidateSession } from "@/lib/auth/session";
+import { validateRequest } from "@/lib/server/auth/request";
+import { createSessionCookie, invalidateSession } from "@/lib/server/auth/session";
 
 export async function POST(req: Request) {
   const session = await validateRequest(req);

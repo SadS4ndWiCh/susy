@@ -8,8 +8,8 @@ import { Loader } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 
-import { signUp } from "@/lib/api/auth"
-import { signupSchema } from "@/lib/validations/auth"
+import { signUp } from "@/lib/client/api/auth"
+import { signupSchema } from "@/lib/shared/validations/auth"
 
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";

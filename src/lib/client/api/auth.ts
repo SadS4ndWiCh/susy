@@ -1,4 +1,4 @@
-import type { SignUp, SignIn } from "@/lib/validations/auth";
+import type { SignUp, SignIn } from "@/lib/shared/validations/auth";
 
 import { api } from ".";
 
