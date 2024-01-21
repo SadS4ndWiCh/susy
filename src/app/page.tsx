@@ -1,5 +1,5 @@
 import { LogoutButton } from "@/components/logout-button";
-import { CreateLinkForm } from "@/components/create-link-form";
+import { CreateLinkForm } from "@/components/forms/create-link-form";
 import { UserLinks } from "@/components/user-links";
 
 export default function Home() {
