@@ -1,18 +1,29 @@
-import { NextApiHandler } from "next";
 import { NextResponse } from "next/server";
 
+import { eq } from "drizzle-orm";
 import { init } from "@paralleldrive/cuid2";
 import { format } from "date-fns";
 
 import { db } from "@/db/connection";
 import { links } from "@/db/schemas";
+
 import { createSusy } from "@/lib/susy";
 import { newLinkSchema } from "@/lib/validations/links";
+import { validateRequest } from "@/lib/auth/request";
 
 const createId = init({ length: 15 });
 const DAYS_IN_SECONDS = 1000 * 60 * 60 * 24;
 
 export async function POST(req: Request) {
+  const session = await validateRequest(req);
+
+  if (!session) {
+    return NextResponse.json(
+      { success: false, error: "Unauthorized" },
+      { status: 401 }
+    );
+  }
+
   const body = await req.json();
 
   const validatedLink = newLinkSchema.safeParse(body);
@@ -31,17 +42,17 @@ export async function POST(req: Request) {
       "yyyy-MM-dd HH:mm:ss"
     );
 
-    const link = await db
+    await db
       .insert(links)
       .values({
         id: createId(),
         url: validatedLink.data.url,
         susLink: susy,
-        expiresAt
-      })
-      .returning();
+        expiresAt,
+        ownerId: session.userId,
+      });
 
-    return NextResponse.json({ success: true, link: link[0] }, { status: 201 });
+    return NextResponse.json({ success: true }, { status: 201 });
   } catch (err) {
     return NextResponse.json(
       { success: false, error: "Unexpected error occour" },
@@ -50,11 +61,21 @@ export async function POST(req: Request) {
   }
 }
 
-export const GET: NextApiHandler = async () => {
+export async function GET(req: Request) {
+  const session = await validateRequest(req);
+
+  if (!session) {
+    return NextResponse.json(
+      { success: false, error: "Unauthorized" },
+      { status: 401 }
+    );
+  }
+
   try {
     const allLinks = await db
       .select()
-      .from(links);
+      .from(links)
+      .where(eq(links.ownerId, session.userId));
     
     return NextResponse.json(allLinks)
   } catch (err) {
