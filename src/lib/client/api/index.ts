@@ -1,7 +1,19 @@
-import { env } from "@/lib/client/env";
+type Method = "GET" | "POST" | "DELETE";
 
-export async function api(route: string, init: RequestInit | undefined) {
-  const url = new URL(route, env.NEXT_PUBLIC_API_BASE_URL);
+async function baseApi(method: Method, route: string, init?: RequestInit) {
+  const headers = new Headers(init?.headers);
 
-  return fetch(url, init);
+  if (method !== "GET") headers.set("Content-Type", "application/json");
+
+  return await fetch(route, {
+    method,
+    headers,
+    ...init
+  });
+}
+
+export const api = {
+  get: baseApi.bind(null, "GET"),
+  post: baseApi.bind(null, "POST"),
+  delete: baseApi.bind(null, "DELETE")
 }

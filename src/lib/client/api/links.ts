@@ -2,37 +2,30 @@ import { allLinksSchema, DeleteLink, type NewLink } from "@/lib/shared/validatio
 import { api } from ".";
 
 export const getUserLinks = async () => {
-  const res = await api("/api/links", {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json"
-    }
-  });
+  const res = await api.get("/api/links");
 
   if (!res.ok) {
     console.log("[GET_USER_LINKS]: Failed to get user links.");
     return [];
   }
 
-  return allLinksSchema.parse(await res.json());
+  const validatedLink = allLinksSchema.safeParse(await res.json());
+  if (!validatedLink.success) {
+    console.log("[GET_USER_LINKS]: API return wrong all links schema.");
+    return [];
+  }
+
+  return validatedLink.data;
 };
 
 export async function createLink(data: NewLink) {
-  return api("/api/links", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
+  return api.post("/api/links", {
     body: JSON.stringify(data)
   });
 }
 
 export async function deleteLink(data: DeleteLink) {
-  return api("/api/links", {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json"
-    },
+  return api.delete("/api/links", {
     body: JSON.stringify(data)
   });
 }
