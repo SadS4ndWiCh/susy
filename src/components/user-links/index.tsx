@@ -3,11 +3,10 @@
 import { Link as LinkIcon } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 
-import { env } from "@/lib/client/env";
 import { getUserLinks } from "@/lib/client/api/links";
 
-import { CopyButton } from "./copy-button";
-import { Skeleton } from "./ui/skeleton";
+import { Skeleton } from "../ui/skeleton";
+import { LinkItem } from "./link-item";
 
 export function UserLinks() {
   const { isPending: loading, data: links } = useQuery({
@@ -31,28 +30,7 @@ export function UserLinks() {
   return (
     <ul className="mt-2 space-y-2">
       {links.length > 0 && links.map(link => (
-        <li
-          key={link.id}
-          className="flex items-center justify-between p-4 border border-border rounded-md"
-        >
-          <div className="flex flex-col">
-            <span>{link.susLink}</span>
-
-            <div className="space-x-2 mt-2">
-              <span className="w-fit text-sm px-2 py-1 bg-muted text-muted-foreground rounded-md">
-                {link.url}
-              </span>
-
-              <span className="w-fit text-sm px-2 py-1 bg-muted text-muted-foreground rounded-md">
-                7 days remaing
-              </span>
-            </div>
-          </div>
-
-          <div>
-            <CopyButton content={`${env.NEXT_PUBLIC_API_BASE_URL}/${link.susLink}`} />
-          </div>
-        </li>
+        <LinkItem key={link.id} link={link} />
       ))}
     </ul>
   )
