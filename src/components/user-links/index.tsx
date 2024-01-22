@@ -18,7 +18,7 @@ export function UserLinks() {
 
   if (!links || links.length === 0) return (
     <div className="flex flex-col items-center mx-auto max-w-sm text-center">
-      <div className="w-fit p-4 mb-2 rounded-md bg-fuchsia-50 text-fuchsia-600">
+      <div className="w-fit p-4 mb-2 rounded-md bg-fuchsia-600/10 text-fuchsia-600">
         <LinkIcon className="w-5 h-5" />
       </div>
 
