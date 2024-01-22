@@ -1,4 +1,4 @@
-import { allLinksSchema, type NewLink } from "@/lib/shared/validations/links";
+import { allLinksSchema, DeleteLink, type NewLink } from "@/lib/shared/validations/links";
 import { api } from ".";
 
 export const getUserLinks = async () => {
@@ -20,6 +20,16 @@ export const getUserLinks = async () => {
 export async function createLink(data: NewLink) {
   return api("/api/links", {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  });
+}
+
+export async function deleteLink(data: DeleteLink) {
+  return api("/api/links", {
+    method: "DELETE",
     headers: {
       "Content-Type": "application/json"
     },

@@ -15,3 +15,6 @@ export type AllLinks = z.infer<typeof allLinksSchema>;
 
 export const newLinkSchema = linkSchema.pick({ url: true });
 export type NewLink = z.infer<typeof newLinkSchema>;
+
+export const deleteLinkSchema = linkSchema.pick({ id: true });
+export type DeleteLink = z.infer<typeof deleteLinkSchema>;
