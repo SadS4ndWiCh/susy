@@ -1,35 +1,26 @@
 "use client"
 
-import { useRouter } from "next/navigation"
-
-import { z } from "zod"
-import { toast } from "sonner"
 import { Loader } from "lucide-react"
 import { useForm } from "react-hook-form"
+import { useMutation } from "@tanstack/react-query"
 import { zodResolver } from "@hookform/resolvers/zod"
 
-import { signUp } from "@/lib/client/api/auth"
-import { signupSchema } from "@/lib/shared/validations/auth"
+import { useAuth } from "@/lib/client/hooks/use-auth"
+import { type SignUp, signupSchema } from "@/lib/shared/validations/auth"
 
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useMutation } from "@tanstack/react-query"
 
 export function SignupForm() {
-  const router = useRouter();
+  const { signUp } = useAuth();
 
-  const { register, handleSubmit } = useForm<z.infer<typeof signupSchema>>({
+  const { register, handleSubmit } = useForm<SignUp>({
     resolver: zodResolver(signupSchema),
   });
 
   const { isPending: loading, mutate: onSubmit } = useMutation({
     mutationFn: signUp,
-    onSettled: (res) => {
-      if (!res || !res.ok) return toast.error("Failed to sign up");
-
-      router.replace("/");
-    }
   });
 
   return (

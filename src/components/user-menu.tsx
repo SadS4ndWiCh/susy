@@ -1,7 +1,9 @@
 "use client"
 
-import { Laptop, Menu, Moon, Palette, Sun } from "lucide-react";
+import { Laptop, LogOut, Menu, Moon, Palette, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
+
+import { useAuth } from "@/lib/client/hooks/use-auth";
 
 import {
   DropdownMenu,
@@ -16,6 +18,7 @@ import { Button } from "./ui/button";
 
 export function UserMenu() {
   const { setTheme } = useTheme();
+  const { signOut } = useAuth();
 
   return (
     <DropdownMenu>
@@ -45,6 +48,10 @@ export function UserMenu() {
             </DropdownMenuItem>
           </DropdownMenuSubContent>
         </DropdownMenuSub>
+        <DropdownMenuItem onSelect={signOut}>
+          <LogOut className="w-4 h-4 mr-2" />
+          <span>Logout</span>
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   )

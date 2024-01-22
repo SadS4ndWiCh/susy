@@ -1,35 +1,26 @@
 "use client"
 
-import { useRouter } from "next/navigation"
-
-import { z } from "zod"
-import { toast } from "sonner"
 import { Loader } from "lucide-react"
 import { useForm } from "react-hook-form"
+import { useMutation } from "@tanstack/react-query"
 import { zodResolver } from "@hookform/resolvers/zod"
 
-import { signIn } from "@/lib/client/api/auth"
-import { signinSchema } from "@/lib/shared/validations/auth"
+import { useAuth } from "@/lib/client/hooks/use-auth"
+import { type SignIn, signinSchema } from "@/lib/shared/validations/auth"
 
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useMutation } from "@tanstack/react-query"
 
 export function SigninForm() {
-  const router = useRouter();
+  const { signIn } = useAuth();
 
-  const { register, handleSubmit } = useForm<z.infer<typeof signinSchema>>({
+  const { register, handleSubmit } = useForm<SignIn>({
     resolver: zodResolver(signinSchema),
   });
 
   const { isPending: loading, mutate: onSubmit } = useMutation({
     mutationFn: signIn,
-    onSettled: (res) => {
-      if (!res || !res.ok) return toast.error("Failed to login");
-
-      router.replace("/");
-    }
   });
 
   return (
