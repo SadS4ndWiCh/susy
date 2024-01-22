@@ -1,12 +1,12 @@
 "use client"
 
 import { toast } from "sonner"
-import { useCopyToClipboard } from "usehooks-ts"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { Copy, MoreVertical, Trash2 } from "lucide-react"
 
 import { env } from "@/lib/client/env"
 import { deleteLink } from "@/lib/client/api/links"
+import { useCopy } from "@/lib/client/hooks/use-copy"
 import { type Link } from "@/lib/shared/validations/links"
 
 import { Button } from "@/components/ui/button"
@@ -22,7 +22,7 @@ type LinkItemProps = {
 }
 
 export function LinkItem(props: LinkItemProps) {
-  const [_, copy] = useCopyToClipboard();
+  const copy = useCopy();
 
   const queryClient = useQueryClient();
   const { isPending: loading, mutate: deleteLinkItem } = useMutation({
@@ -65,7 +65,6 @@ export function LinkItem(props: LinkItemProps) {
             <DropdownMenuItem
               onSelect={() => {
                 copy(`${env.NEXT_PUBLIC_API_BASE_URL}/${props.link.susLink}`);
-                toast.info(`Copied to clipboard`);
               }}
             >
               <Copy className="w-4 h-4 mr-2" />
