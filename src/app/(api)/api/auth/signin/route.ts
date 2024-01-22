@@ -1,12 +1,9 @@
 import { NextResponse } from "next/server";
 
-import { eq } from "drizzle-orm";
-
-import { db } from "@/lib/server/db/connection";
 import { signinSchema } from "@/lib/shared/validations/auth";
 
-import { userKeys } from "@/lib/server/db/schemas";
 import { validatePassword } from "@/lib/server/auth/password";
+import { getUserKey } from "@/lib/server/db/queries/user-keys";
 import { createSession, createSessionCookie } from "@/lib/server/auth/session";
 
 export async function POST(req: Request) {
@@ -23,14 +20,7 @@ export async function POST(req: Request) {
   let key: { userId: string, hashedPassword: string | null }[];
 
   try {
-    key = await db
-      .select({
-        userId: userKeys.userId,
-        hashedPassword: userKeys.hashedPassword
-      })
-      .from(userKeys)
-      .where(eq(userKeys.id, `email:${validatedSignin.data.email}`))
-      .limit(1);
+    key = await getUserKey.all({ key: `email:${validatedSignin.data.email}` });
   } catch (err) {
     console.log(err);
 

@@ -6,11 +6,11 @@ import { TimeSpan } from "oslo";
 import { serializeCookie } from "oslo/cookie";
 import { init } from "@paralleldrive/cuid2";
 
+import { env } from "@/lib/server/env";
 import { db } from "@/lib/server/db/connection";
 import { userSessions } from "@/lib/server/db/schemas";
-
-import { env } from "@/lib/server/env";
 import { createJWTBuilder } from "@/lib/server/auth/jwt";
+import { getUserSession } from "@/lib/server/db/queries/session";
 
 export type Session = {
   userId: string;
@@ -87,10 +87,7 @@ export async function createSessionCookie(session: Session | null) {
 
 export async function getSession(sessionId: string): Promise<Session | null> {
   try {
-    const session = await db
-      .select()
-      .from(userSessions)
-      .where(eq(userSessions.id, sessionId));
+    const session = await getUserSession.all({ sessionId });
     
     if (session.length === 0) return null;
     

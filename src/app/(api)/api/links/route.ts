@@ -1,15 +1,16 @@
 import { NextResponse } from "next/server";
 
+import { format } from "date-fns";
 import { and, eq } from "drizzle-orm";
 import { init } from "@paralleldrive/cuid2";
-import { format } from "date-fns";
 
 import { db } from "@/lib/server/db/connection";
 import { links } from "@/lib/server/db/schemas";
 
 import { createSusy } from "@/lib/server/susy";
-import { deleteLinkSchema, newLinkSchema } from "@/lib/shared/validations/links";
 import { validateRequest } from "@/lib/server/auth/request";
+import { getUserLinks } from "@/lib/server/db/queries/links";
+import { deleteLinkSchema, newLinkSchema } from "@/lib/shared/validations/links";
 
 const createId = init({ length: 15 });
 const DAYS_IN_SECONDS = 1000 * 60 * 60 * 24;
@@ -72,10 +73,7 @@ export async function GET(req: Request) {
   }
 
   try {
-    const allLinks = await db
-      .select()
-      .from(links)
-      .where(eq(links.ownerId, session.userId));
+    const allLinks = await getUserLinks.all({ userId: session.userId });
     
     return NextResponse.json(allLinks)
   } catch (err) {
