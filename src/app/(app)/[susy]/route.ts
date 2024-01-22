@@ -3,8 +3,8 @@ import { NextResponse } from "next/server";
 import { isBefore } from "date-fns";
 import { eq } from "drizzle-orm";
 
-import { db } from "@/db/connection";
-import { links } from "@/db/schemas";
+import { db } from "@/lib/server/db/connection";
+import { links } from "@/lib/server/db/schemas";
 
 export async function GET(
   req: Request,

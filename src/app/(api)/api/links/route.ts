@@ -4,8 +4,8 @@ import { eq } from "drizzle-orm";
 import { init } from "@paralleldrive/cuid2";
 import { format } from "date-fns";
 
-import { db } from "@/db/connection";
-import { links } from "@/db/schemas";
+import { db } from "@/lib/server/db/connection";
+import { links } from "@/lib/server/db/schemas";
 
 import { createSusy } from "@/lib/server/susy";
 import { newLinkSchema } from "@/lib/shared/validations/links";

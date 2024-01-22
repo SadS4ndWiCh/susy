@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { init } from "@paralleldrive/cuid2";
 
-import { db } from "@/db/connection";
-import { userKeys, users } from "@/db/schemas";
+import { db } from "@/lib/server/db/connection";
+import { userKeys, users } from "@/lib/server/db/schemas";
 import { hashPassword } from "@/lib/server/auth/password";
 import { signupSchema } from "@/lib/shared/validations/auth";
 import { createSession, createSessionCookie } from "@/lib/server/auth/session";

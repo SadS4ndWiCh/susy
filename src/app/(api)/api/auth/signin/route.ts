@@ -2,10 +2,10 @@ import { NextResponse } from "next/server";
 
 import { eq } from "drizzle-orm";
 
-import { db } from "@/db/connection";
+import { db } from "@/lib/server/db/connection";
 import { signinSchema } from "@/lib/shared/validations/auth";
 
-import { userKeys } from "@/db/schemas";
+import { userKeys } from "@/lib/server/db/schemas";
 import { validatePassword } from "@/lib/server/auth/password";
 import { createSession, createSessionCookie } from "@/lib/server/auth/session";
 

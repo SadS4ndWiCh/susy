@@ -6,8 +6,8 @@ import { TimeSpan } from "oslo";
 import { serializeCookie } from "oslo/cookie";
 import { init } from "@paralleldrive/cuid2";
 
-import { db } from "@/db/connection";
-import { userSessions } from "@/db/schemas";
+import { db } from "@/lib/server/db/connection";
+import { userSessions } from "@/lib/server/db/schemas";
 
 import { env } from "@/lib/server/env";
 import { createJWTBuilder } from "@/lib/server/auth/jwt";
