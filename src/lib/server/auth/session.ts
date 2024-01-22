@@ -23,6 +23,7 @@ export type Session = {
 
 const createId = init({ length: 15 });
 const DAYS_IN_MILISECONDS = 1000 * 60 * 60 * 24;
+export const SESSION_COOKIE_NAME = "susysession";
 
 function formatTimestamp(date: Date) {
   return format(date, "yyyy-MM-dd HH:mm:ss");
@@ -75,9 +76,9 @@ export async function createSessionCookie(session: Session | null) {
     );
   }
 
-  return serializeCookie("susysession", payload, {
+  return serializeCookie(SESSION_COOKIE_NAME, payload, {
     expires: session?.activeExpiresAt ?? new Date(0),
-    maxAge: 60 * 60 * 24,
+    maxAge: session?.activeExpiresAt ? 60 * 60 * 24 : 0,
     path: "/",
     httpOnly: true,
     secure: env.NODE_ENV === "production",

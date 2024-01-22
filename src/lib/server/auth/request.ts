@@ -6,7 +6,7 @@ import { verifyRequestOrigin } from "oslo/request";
 import { env } from "@/lib/server/env";
 
 import { validateJWT } from "./jwt";
-import { validateSession } from "./session";
+import { SESSION_COOKIE_NAME, validateSession } from "./session";
 
 const SAFE_METHODS = ["GET", "OPTIONS", "HEAD", "TRACE"];
 
@@ -20,7 +20,7 @@ export async function validateRequest(req: { headers: Headers, method: string })
   const headerCookies = req.headers.get("cookie");
   if (!headerCookies) return null;
 
-  const session = parseCookies(headerCookies).get("susysession");
+  const session = parseCookies(headerCookies).get(SESSION_COOKIE_NAME);
   if (!session) return null;
 
   const jwt = await validateJWT(session);
