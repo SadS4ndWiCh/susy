@@ -11,7 +11,7 @@ export function useAuth() {
   const router = useRouter();
 
   const signUp = async (credentials: SignUp) => {
-    const res = await api.signIn(credentials);
+    const res = await api.signUp(credentials);
 
     if (res.ok) {
       return router.replace("/");
