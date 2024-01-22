@@ -1,6 +1,7 @@
 "use client"
 
 import { toast } from "sonner"
+import { formatDistanceToNow } from "date-fns"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { Copy, MoreVertical, Trash2 } from "lucide-react"
 
@@ -34,6 +35,8 @@ export function LinkItem(props: LinkItemProps) {
       queryClient.invalidateQueries({ queryKey: ["links"] });
     }
   });
+  
+  const daysRemaing = formatDistanceToNow(props.link.expiresAt);
 
   return (
     <li
@@ -49,7 +52,7 @@ export function LinkItem(props: LinkItemProps) {
           </span>
 
           <span className="w-fit text-sm px-2 py-1 bg-muted text-muted-foreground rounded-md">
-            7 days remaing
+            {daysRemaing} remaing
           </span>
         </div>
       </div>
