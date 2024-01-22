@@ -1,6 +1,6 @@
-import { LogoutButton } from "@/components/logout-button";
 import { CreateLinkForm } from "@/components/forms/create-link-form";
 import { UserLinks } from "@/components/user-links";
+import { UserMenu } from "@/components/user-menu";
 
 export default function Home() {
   return (
@@ -14,7 +14,7 @@ export default function Home() {
           </p>
         </div>
 
-        <LogoutButton />
+        <UserMenu />
       </header>
 
       <main className="max-w-xl mx-auto my-4">
