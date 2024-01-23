@@ -41,48 +41,49 @@ export function LinkItem(props: LinkItemProps) {
   return (
     <li
       key={props.link.id}
-      className="flex items-center justify-between p-4 border border-border rounded-md"
+      className="flex items-center justify-between gap-2 p-4 border border-border rounded-md"
     >
       <div className="flex flex-col">
         <span>{props.link.susLink}</span>
 
-        <div className="space-x-2 mt-2">
-          <span className="w-fit text-sm px-2 py-1 bg-muted text-muted-foreground rounded-md">
+        <div className="flex flex-wrap gap-2 mt-2">
+          <span
+            title={props.link.url}
+            className="max-w-32 text-xs px-2 py-1 bg-muted text-muted-foreground rounded-md truncate"
+          >
             {props.link.url}
           </span>
 
-          <span className="w-fit text-sm px-2 py-1 bg-muted text-muted-foreground rounded-md">
+          <span className="text-xs px-2 py-1 bg-muted text-muted-foreground rounded-md">
             {daysRemaing} remaing
           </span>
         </div>
       </div>
 
-      <div>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="icon">
-              <MoreVertical className="w-4 h-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuItem
-              onSelect={() => {
-                copy(`${env.NEXT_PUBLIC_API_BASE_URL}/${props.link.susLink}`);
-              }}
-            >
-              <Copy className="w-4 h-4 mr-2" />
-              <span>Copy</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              disabled={loading}
-              onSelect={() => deleteLinkItem({ id: props.link.id })}
-            >
-              <Trash2 className="w-4 h-4 mr-2" />
-              <span>Delete</span>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline" size="icon" className="flex-shrink-0">
+            <MoreVertical className="w-4 h-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuItem
+            onSelect={() => {
+              copy(`${env.NEXT_PUBLIC_API_BASE_URL}/${props.link.susLink}`);
+            }}
+          >
+            <Copy className="w-4 h-4 mr-2" />
+            <span>Copy</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            disabled={loading}
+            onSelect={() => deleteLinkItem({ id: props.link.id })}
+          >
+            <Trash2 className="w-4 h-4 mr-2" />
+            <span>Delete</span>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </li>
   )
 }

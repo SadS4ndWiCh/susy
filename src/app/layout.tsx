@@ -23,7 +23,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn("text-foreground bg-background antialiased font-mono", GeistMono.variable)}>
+      <body className={cn("p-4 text-foreground bg-background antialiased font-mono", GeistMono.variable)}>
         <Providers>
           {children}
         </Providers>

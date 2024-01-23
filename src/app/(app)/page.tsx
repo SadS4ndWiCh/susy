@@ -5,7 +5,7 @@ import { UserMenu } from "@/components/user-menu";
 export default function Home() {
   return (
     <>
-      <header className="flex justify-between gap-4 max-w-xl mx-auto mt-8">
+      <header className="flex justify-between gap-4 max-w-xl mx-auto">
         <div>
           <h1 className="text-xl font-bold">susy.</h1>
           <p className="text-muted-foreground">
