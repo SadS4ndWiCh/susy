@@ -1,6 +1,5 @@
 "use client"
 
-import { Loader } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { useMutation } from "@tanstack/react-query"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -38,10 +37,7 @@ export function SignupForm() {
         <Input id="password" type="password" placeholder="*********" {...register("password")} />
       </div>
 
-      <Button className="flex items-center gap-2">
-        {loading && <Loader className="w-4 h-4 animate-spin" />}
-        {"Create account"}
-      </Button>
+      <Button loading={loading}>Create account</Button>
     </form>
   )
 }

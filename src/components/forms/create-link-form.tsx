@@ -1,7 +1,6 @@
 "use client"
 
 import { toast } from "sonner";
-import { Loader } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -40,10 +39,7 @@ export function CreateLinkForm() {
           placeholder="e.g. https://google.com"
           {...register("url")}
         />
-        <Button className="flex items-center gap-2">
-          {loading && <Loader className="w-4 h-4 animate-spin" />}
-          {"Create"}
-        </Button>
+        <Button loading={loading}>Create</Button>
       </div>
     </form>
   )
