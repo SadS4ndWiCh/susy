@@ -4,11 +4,8 @@ import { db } from "../connection";
 import { userKeys } from "../schemas";
 
 export const getUserKey = db
-  .select({
-    userId: userKeys.userId,
-    hashedPassword: userKeys.hashedPassword
-  })
+  .select()
   .from(userKeys)
-  .where(eq(userKeys.id, sql.placeholder("key")))
+  .where(eq(userKeys.id, sql.placeholder("keyId")))
   .limit(1)
   .prepare();
