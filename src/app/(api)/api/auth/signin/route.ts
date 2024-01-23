@@ -2,8 +2,7 @@ import { NextResponse } from "next/server";
 
 import { signinSchema } from "@/lib/shared/validations/auth";
 
-import { validatePassword } from "@/lib/server/auth/password";
-import { getUserKey } from "@/lib/server/db/queries/user-keys";
+import { getKey } from "@/lib/server/auth/users";
 import { createSession, createSessionCookie } from "@/lib/server/auth/session";
 
 export async function POST(req: Request) {
@@ -17,34 +16,15 @@ export async function POST(req: Request) {
     );
   }
 
-  let key: { userId: string, hashedPassword: string | null }[];
-
-  try {
-    key = await getUserKey.all({ key: `email:${validatedSignin.data.email}` });
-  } catch (err) {
-    console.log(err);
-
+  const key = await getKey("email", validatedSignin.data.email, validatedSignin.data.password);
+  if (!key) {
     return NextResponse.json(
-      { success: false, error: "Unexpected error occour" },
-      { status: 500 }
+      { success: false, message: "Incorrect email or password" },
+      { status: 400 }
     );
   }
 
-  if (key.length === 0) {
-    return NextResponse.json(
-      { success: false, error: "Incorrect email or password" },
-      { status: 404 }
-    );
-  }
-
-  if (!validatePassword(key[0].hashedPassword!, validatedSignin.data.password)) {
-    return NextResponse.json(
-      { success: false, error: "Incorrect email or password" },
-      { status: 404 }
-    );
-  }
-
-  const session = await createSession(key[0].userId);
+  const session = await createSession(key.userId);
   if (!session) {
     return NextResponse.json(
       { success: false, error: "Unexpected error occour" },

@@ -1,13 +1,8 @@
 import { NextResponse } from "next/server";
-import { init } from "@paralleldrive/cuid2";
 
-import { db } from "@/lib/server/db/connection";
-import { userKeys, users } from "@/lib/server/db/schemas";
-import { hashPassword } from "@/lib/server/auth/password";
+import { createUser } from "@/lib/server/auth/users";
 import { signupSchema } from "@/lib/shared/validations/auth";
 import { createSession, createSessionCookie } from "@/lib/server/auth/session";
-
-const createId = init({ length: 15 });
 
 export async function POST(req: Request) {
   const body = await req.json();
@@ -20,43 +15,25 @@ export async function POST(req: Request) {
     );
   }
 
-  const userId = createId();
-
-  try {
-    await db
-      .insert(users)
-      .values({
-        id: userId,
-        username: validatedSignup.data.username,
-        email: validatedSignup.data.email
-      });
-  } catch (err) {
-    console.log(err);
-
+  const user = await createUser({
+    key: {
+      providerId: "email",
+      providerUserId: validatedSignup.data.email,
+      password: validatedSignup.data.password,
+    },
+    attributes: {
+      username: validatedSignup.data.username,
+      email: validatedSignup.data.email
+    }
+  });
+  if (!user) {
     return NextResponse.json(
-      { success: false, error: "User already exists" },
-      { status: 409 },
-    );
-  }
-
-  try {
-    await db
-      .insert(userKeys)
-      .values({
-        id: `email:${validatedSignup.data.email}`,
-        userId,
-        hashedPassword: await hashPassword(validatedSignup.data.password)
-      });
-  } catch (err) {
-    console.log(err);
-
-    return NextResponse.json(
-      { success: false, error: "Unexpected error occour" },
+      { success: false, message: "Failed to create user"},
       { status: 500 }
     );
   }
 
-  const session = await createSession(userId);
+  const session = await createSession(user.id);
   if (!session) {
     return NextResponse.json(
       { success: false, error: "Unexpected error occour" },
