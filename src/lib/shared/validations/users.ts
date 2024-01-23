@@ -13,3 +13,8 @@ export const userAttributesSchema = userSchema.omit({
   createdAt: true
 });
 export type UserAttributes = z.infer<typeof userAttributesSchema>;
+
+export const updatableAttributesSchema = userAttributesSchema
+  .pick({ username: true })
+  .partial();
+export type UpdatableAttributes = z.infer<typeof updatableAttributesSchema>;
