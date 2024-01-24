@@ -49,7 +49,7 @@ export function LinkItem(props: LinkItemProps) {
         <div className="flex flex-wrap gap-2 mt-2">
           <span
             title={props.link.url}
-            className="max-w-32 text-xs px-2 py-1 bg-muted text-muted-foreground rounded-md truncate"
+            className="max-w-32 md:max-w-64 lg:max-w-xl text-xs px-2 py-1 bg-muted text-muted-foreground rounded-md truncate"
           >
             {props.link.url}
           </span>
@@ -78,6 +78,7 @@ export function LinkItem(props: LinkItemProps) {
           <DropdownMenuItem
             disabled={loading}
             onSelect={() => deleteLinkItem({ id: props.link.id })}
+            className="text-red-600 bg-red-600/10 focus:bg-red-600/20 focus:text-red-600"
           >
             <Trash2 className="w-4 h-4 mr-2" />
             <span>Delete</span>
