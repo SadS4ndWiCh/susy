@@ -4,12 +4,13 @@ import { env } from "@/lib/server/env";
 
 const authorizeEndpoint = "https://github.com/login/oauth/authorize";
 const tokenEndpoint = "https://github.com/login/oauth/access_token";
+const githubCallbackURL = `${env.BASE_URL}/api/auth/github/callback`
 
 export const client = new OAuth2Client(
   env.GITHUB_CLIENT_ID,
   authorizeEndpoint,
   tokenEndpoint,
-  { redirectURI: env.GITHUB_CALLBACK_URL }
+  { redirectURI: githubCallbackURL }
 );
 
 export async function getGithubUser(accessToken: string) {
