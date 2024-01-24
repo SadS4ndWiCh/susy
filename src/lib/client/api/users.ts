@@ -1,4 +1,4 @@
-import { userSchema } from "@/lib/shared/validations/users";
+import { UpdatableAttributes, userSchema } from "@/lib/shared/validations/users";
 import { api } from ".";
 
 export async function getUser() {
@@ -11,4 +11,14 @@ export async function getUser() {
   if (!validatedUser.success) return null;
 
   return validatedUser.data;
+}
+
+export async function updateUser(attributes: UpdatableAttributes) {
+  return api.put("/api/users", {
+    body: JSON.stringify(attributes)
+  });
+}
+
+export async function deleteUser() {
+  return api.delete("/api/users");
 }
