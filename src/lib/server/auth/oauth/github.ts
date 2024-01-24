@@ -1,3 +1,5 @@
+import "server-only";
+
 import { OAuth2Client } from "oslo/oauth2";
 
 import { env } from "@/lib/server/env";
