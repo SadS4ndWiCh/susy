@@ -26,6 +26,9 @@ DATABASE_AUTH_TOKEN="auth-token"
 
 JWT_SECRET="jwt-secret"
 JWT_ALGORITHM="jwt-algorithm"
+
+GITHUB_CLIENT_ID="github-client-id"
+GITHUB_CLIENT_SECRET="github-client-secret"
 ```
 
 Create a file called `.env.local` and insert these variables into it.
