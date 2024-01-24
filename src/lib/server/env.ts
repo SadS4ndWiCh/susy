@@ -11,6 +11,9 @@ export const env = createEnv({
     JWT_ALGORITHM: z.string(),
     JWT_SECRET: z.string(),
     BASE_URL: z.string().url(),
+    GITHUB_CLIENT_ID: z.string(),
+    GITHUB_CLIENT_SECRET: z.string(),
+    GITHUB_CALLBACK_URL: z.string().url(),
   },
   runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
@@ -19,5 +22,8 @@ export const env = createEnv({
     JWT_ALGORITHM: process.env.JWT_ALGORITHM,
     JWT_SECRET: process.env.JWT_SECRET,
     BASE_URL: process.env.BASE_URL,
+    GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID,
+    GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
+    GITHUB_CALLBACK_URL: process.env.GITHUB_CALLBACK_URL
   }
 });
