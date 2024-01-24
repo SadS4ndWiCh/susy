@@ -23,6 +23,9 @@ export type Session = {
 
 const createId = init({ length: 15 });
 const DAYS_IN_MILISECONDS = 1000 * 60 * 60 * 24;
+const ACTIVE_EXPIRES_DAYS = 4;
+const ACTIVE_EXPIRES_DURATION = DAYS_IN_MILISECONDS * ACTIVE_EXPIRES_DAYS;
+const IDLE_EXPIRES_DURATION = ACTIVE_EXPIRES_DURATION * 2;
 export const SESSION_COOKIE_NAME = "susysession";
 
 function formatTimestamp(date: Date) {
@@ -30,8 +33,8 @@ function formatTimestamp(date: Date) {
 }
 
 export async function createSession(userId: string): Promise<Session | null> {
-  const activeExpiresAt = new Date(Date.now() + (DAYS_IN_MILISECONDS * 4));
-  const idleExpiresAt = new Date(Date.now() + (DAYS_IN_MILISECONDS * 7));
+  const activeExpiresAt = new Date(Date.now() + ACTIVE_EXPIRES_DURATION);
+  const idleExpiresAt = new Date(Date.now() + IDLE_EXPIRES_DURATION);
 
   const sessionId = createId();
 
@@ -45,7 +48,7 @@ export async function createSession(userId: string): Promise<Session | null> {
         idleExpires: formatTimestamp(idleExpiresAt)
       });
   } catch (err) {
-    console.log(err);
+    console.log("[CREATE_SESSION] Failed to create session: ", err);
 
     return null;
   }
@@ -71,14 +74,14 @@ export async function createSessionCookie(session: Session | null) {
         issuer: "susy",
         subject: session.userId,
         audiences: ["Susy's user"],
-        expiresIn: new TimeSpan(1, "d"),
+        expiresIn: new TimeSpan(ACTIVE_EXPIRES_DAYS, "d"),
       }
     );
   }
 
   return serializeCookie(SESSION_COOKIE_NAME, payload, {
     expires: session?.activeExpiresAt ?? new Date(0),
-    maxAge: session?.activeExpiresAt ? 60 * 60 * 24 : 0,
+    maxAge: session?.activeExpiresAt ? IDLE_EXPIRES_DURATION / 1000 : 0,
     path: "/",
     httpOnly: true,
     secure: env.NODE_ENV === "production",
@@ -119,8 +122,6 @@ export async function invalidateSession(sessionId: string) {
       .delete(userSessions)
       .where(eq(userSessions.id, sessionId));
     
-    console.log(`[INVALIDATE_SESSION]: Session ${sessionId} successfuly invalidated`);
-
     return true;
   } catch (err) {
     console.log("[INVALIDATE_SESSION]: Failed to invalidate session: ", err);
@@ -135,8 +136,6 @@ export async function invalidateUserSessions(userId: string) {
       .delete(userSessions)
       .where(eq(userSessions.userId, userId));
     
-    console.log("[INVALIDATE_USER_SESSIONS]: User sessions successfuly invalidated");
-
     return true;
   } catch (err) {
     console.log("[INVALIDATE_USER_SESSIONS]: Failed to invalidate sessions: ", err);
@@ -152,8 +151,8 @@ export async function validateSession(sessionId: string): Promise<Session | null
   if (session.state === "dead") return null;
   if (session.state === "active") return session;
 
-  const activeExpiresAt = new Date(Date.now() + (DAYS_IN_MILISECONDS * 4));
-  const idleExpiresAt = new Date(Date.now() + (DAYS_IN_MILISECONDS * 7));
+  const activeExpiresAt = new Date(Date.now() + ACTIVE_EXPIRES_DURATION);
+  const idleExpiresAt = new Date(Date.now() + IDLE_EXPIRES_DURATION);
 
   try {
     const result = await db
