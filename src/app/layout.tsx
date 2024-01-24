@@ -8,7 +8,7 @@ import { Providers } from "./providers";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://susy.vercel.app"),
+  metadataBase: new URL("https://susyx.vercel.app"),
   title: {
     template: "%s | Susy",
     default: "Susy"
@@ -23,7 +23,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn("p-4 text-foreground bg-background antialiased font-mono", GeistMono.variable)}>
+      <body className={cn("flex flex-col min-h-screen p-4 text-foreground bg-background antialiased font-mono", GeistMono.variable)}>
         <Providers>
           {children}
         </Providers>
