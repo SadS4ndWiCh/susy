@@ -14,6 +14,8 @@ export async function GET(req: Request) {
   const state = url.searchParams.get("state");
   const code = url.searchParams.get("code");
 
+  const responseError = new Response(null, { status: 302, headers: { Location: "/signin" } });
+
   if (!storedState || !state || !code || storedState !== state) {
     return new Response(null, { status: 400 });
   }
@@ -28,10 +30,7 @@ export async function GET(req: Request) {
   } catch (err) {
     console.log("[GITHUB_AUTH_CALLBACK]: Failed to validate authorization code: ", err);
 
-    return NextResponse.json(
-      { success: false, message: "Failed to validate" },
-      { status: 500 }
-    );
+    return responseError;
   }
 
   const [githubUser, githubEmail] = await Promise.all([
@@ -41,10 +40,7 @@ export async function GET(req: Request) {
 
   if (!githubUser || !githubEmail) {
     console.log("[GITHUB_AUTH_CALLBACK] Failed to fetch user");
-    return NextResponse.json(
-      { success: false, message: "An unexpected error occour" },
-      { status: 500 }
-    );
+    return responseError;
   }
 
   let userId: string;
@@ -65,10 +61,8 @@ export async function GET(req: Request) {
       }
     });
     if (!user) {
-      return NextResponse.json(
-        { success: false, message: "Failed to create user"},
-        { status: 500 }
-      );
+      console.log("[GITHUB_AUTH_CALLBACK] Already exists user with same email");
+      return responseError;
     }
 
     userId = user.id;
@@ -76,18 +70,14 @@ export async function GET(req: Request) {
 
   const session = await createSession(userId);
   if (!session) {
-    return NextResponse.json(
-      { success: false, error: "Unexpected error occour" },
-      { status: 500 }
-    );
+    console.log("[GITHUB_AUTH_CALLBACK] Failed to create user session");
+    return responseError;
   }
 
   const sessionCookie = await createSessionCookie(session);
   if (!sessionCookie) {
-    return NextResponse.json(
-      { success: false, error: "Unexpected error occour" },
-      { status: 500 }
-    );
+    console.log("[GITHUB_AUTH_CALLBACK] Failed to create session cookie");
+    return responseError;
   }
 
   return new NextResponse(null, {
