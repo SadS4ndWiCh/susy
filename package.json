@@ -1,6 +1,8 @@
 {
   "name": "susy",
+  "description": "Create and share suspicious links",
   "version": "0.1.0",
+  "author": "Caio Vinícius <caiocamargo.ct@gmail.com>",
   "private": true,
   "scripts": {
     "dev": "next dev",
