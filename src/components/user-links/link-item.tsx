@@ -55,7 +55,7 @@ export function LinkItem(props: LinkItemProps) {
           </span>
 
           <span className="text-xs px-2 py-1 bg-muted text-muted-foreground rounded-md">
-            {daysRemaing} remaing
+            {daysRemaing} left
           </span>
         </div>
       </div>

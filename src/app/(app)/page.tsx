@@ -5,14 +5,8 @@ import { UserMenu } from "@/components/user-menu";
 export default function Home() {
   return (
     <>
-      <header className="flex justify-between gap-4 max-w-xl mx-auto">
-        <div>
-          <h1 className="text-xl font-bold">susy.</h1>
-          <p className="text-muted-foreground">
-            Already have many URL shortener boring solutions, so aiming for a more 
-            funny one, now you can create a suspicious link to share.
-          </p>
-        </div>
+      <header className="flex items-center justify-between gap-4 max-w-xl mx-auto">
+        <h1 className="text-xl font-bold">susy.</h1>
 
         <UserMenu />
       </header>
