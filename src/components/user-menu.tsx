@@ -1,8 +1,10 @@
 "use client"
 
-import { Laptop, LogOut, Menu, Moon, Palette, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
+import { useQuery } from "@tanstack/react-query";
+import { Laptop, LogOut, Menu, Moon, Palette, Sun } from "lucide-react";
 
+import { getUser } from "@/lib/client/api/users";
 import { useAuth } from "@/lib/client/hooks/use-auth";
 
 import {
@@ -17,6 +19,12 @@ import {
 import { Button } from "./ui/button";
 
 export function UserMenu() {
+  const { data: user } = useQuery({
+    queryKey: ["user"],
+    queryFn: getUser,
+    staleTime: Infinity
+  });
+
   const { setTheme } = useTheme();
   const { signOut } = useAuth();
 
@@ -28,6 +36,13 @@ export function UserMenu() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
+        { user && (
+          <div className="flex flex-col px-1 pb-2 mb-2 border-b border-border">
+            <span className="text-sm font-bold">{user.username}</span>
+            <span className="text-xs">{user.email}</span>
+          </div>
+        ) }
+
         <DropdownMenuSub>
           <DropdownMenuSubTrigger>
             <Palette className="w-4 h-4 mr-2" />
@@ -48,7 +63,10 @@ export function UserMenu() {
             </DropdownMenuItem>
           </DropdownMenuSubContent>
         </DropdownMenuSub>
-        <DropdownMenuItem onSelect={signOut}>
+        <DropdownMenuItem
+          onSelect={signOut}
+          className="text-red-600 bg-red-600/10 focus:bg-red-600/20 focus:text-red-600"
+        >
           <LogOut className="w-4 h-4 mr-2" />
           <span>Logout</span>
         </DropdownMenuItem>
