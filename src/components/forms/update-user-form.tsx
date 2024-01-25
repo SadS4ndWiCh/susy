@@ -1,3 +1,5 @@
+"use client"
+
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -9,6 +11,7 @@ import { UpdatableAttributes, User, updatableAttributesSchema } from "@/lib/shar
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card";
 
 export function UpdateUserForm() {
   const { isPending: loadingUser, data: user } = useQuery({
@@ -43,11 +46,21 @@ export function UpdateUserForm() {
   });
 
   return (
-    <form onSubmit={handleSubmit(data => onSubmit(data))}>
-      <Label htmlFor="username">Username</Label>
-      <Input id="username" disabled={loadingUser} {...register("username")} />
+    <Card>
+      <CardHeader>
+        <CardTitle>Username</CardTitle>
+        <CardDescription>Change your username</CardDescription>
+      </CardHeader>
 
-      <Button loading={loading} className="mt-4">Update</Button>
-    </form>
+      <form onSubmit={handleSubmit(data => onSubmit(data))}>
+        <CardContent>
+          <Input id="username" disabled={loadingUser} {...register("username")} />
+
+          </CardContent>
+        <CardFooter className="pt-6 border-t border-border">
+          <Button loading={loading}>Update</Button>
+        </CardFooter>
+      </form>
+    </Card>
   )
 }
