@@ -1,8 +1,10 @@
 "use client"
 
+import Link from "next/link";
+
 import { useTheme } from "next-themes";
 import { useQuery } from "@tanstack/react-query";
-import { Laptop, LogOut, Menu, Moon, Palette, Sun } from "lucide-react";
+import { Home, Laptop, LogOut, Menu, Moon, Palette, Settings, Sun } from "lucide-react";
 
 import { getUser } from "@/lib/client/api/users";
 import { useAuth } from "@/lib/client/hooks/use-auth";
@@ -42,6 +44,20 @@ export function UserMenu() {
             <span className="text-xs">{user.email}</span>
           </div>
         ) }
+
+        <Link href="/">
+          <DropdownMenuItem>
+            <Home className="w-4 h-4 mr-2" />
+            <span>Home</span>
+          </DropdownMenuItem>
+        </Link>
+
+        <Link href="/settings">
+          <DropdownMenuItem>
+            <Settings className="w-4 h-4 mr-2" />
+            <span>Settings</span>
+          </DropdownMenuItem>
+        </Link>
 
         <DropdownMenuSub>
           <DropdownMenuSubTrigger>
