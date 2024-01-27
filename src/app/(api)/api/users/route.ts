@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
 
 import { db } from "@/lib/server/db/connection";
-import { users } from "@/lib/server/db/schemas";
+import { links, users } from "@/lib/server/db/schemas";
 import { validateRequest } from "@/lib/server/auth/request";
 import { deleteUser, updateUserAttributes } from "@/lib/server/auth/users";
 
@@ -74,6 +74,18 @@ export async function DELETE(req: Request) {
     return NextResponse.json(
       { success: false, message: "Unauthorized" },
       { status: 401 }
+    );
+  }
+
+  try {
+    await db
+      .delete(links)
+      .where(eq(links.ownerId, session.userId));
+  } catch (err) {
+    console.log("[DELETE_USER]: Failed to delete user's links: ", err);
+    return NextResponse.json(
+      { success: false, message: "An unexpected error occour" },
+      { status: 500 }
     );
   }
 
